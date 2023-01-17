@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-dialog
-      v-model="dialog"
+      v-model="$store.state.dialog"
       persistent
       width="400"
     >
@@ -52,14 +52,7 @@ import Cookies from "js-cookie";
 
 export default {
   name: "PhoneDialog",
-  beforeRouteEnter (to, from, next) {
-    next((vm) => {
-      vm.prevRoute = from;
-    });
-  },
   data: () => ({
-    prevRoute: null,
-    dialog: true,
     phoneNumber: "",
     phoneNumberRules: [
       // Check if string has been typed
@@ -71,23 +64,31 @@ export default {
     valid: false,
     disabled: true
   }),
-  created () {
-    // eslint-disable-next-line no-console
-    console.log("prevRoute: " + this.prevRoute);
+  watch: {
+    phoneNumber () {
+      if (this.phoneNumber && /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/.test(this.phoneNumber)) {
+        this.valid = true;
+      } else {
+        this.valid = false;
+      }
+      this.changeSubmitButtonStatus();
+    }
+  },
+  beforeMount () {
+    if (Cookies.get("phoneNumberSubmitted") === "y") {
+      this.$store.commit("closePhoneDialog");
+    }
   },
   methods: {
     closeDialog () {
-      if (this.phoneNumber) {
-        this.dialog = false;
+      if (!this.$store.commit("ifSubmitted")) {
+        this.$store.commit("savePhoneNumber", this.phoneNumber);
+        this.$store.commit("setCookie", "y");
+        this.$store.commit("closePhoneDialog");
       }
-    },
-    setCookie () {
-      Cookies.set("name", "value");
     },
     changeSubmitButtonStatus () {
-      if (this.valid) {
-        this.disabled = false;
-      }
+      this.disabled = !this.valid;
     }
   }
 };

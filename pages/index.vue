@@ -1,6 +1,5 @@
 <template>
   <v-row justify="center" align="center">
-    <PhoneDialog />
     <v-col cols="12" sm="8" md="6">
       <v-card>
         <v-card-title class="headline">
@@ -74,10 +73,8 @@
 </template>
 
 <script>
-import PhoneDialog from "@/components/PhoneDialog.vue";
 
 export default {
-  name: "IndexPage",
-  components: { PhoneDialog }
+  name: "IndexPage"
 };
 </script>

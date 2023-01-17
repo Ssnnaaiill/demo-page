@@ -1,5 +1,6 @@
 <template>
   <v-app dark>
+    <PhoneDialog />
     <!-- <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
@@ -83,29 +84,85 @@
 </template>
 
 <script>
+import Cookies from "js-cookie";
+import PhoneDialog from "~/components/PhoneDialog.vue";
+
 export default {
   name: "DefaultLayout",
-  data () {
-    return {
-      // clipped: false,
-      drawer: false,
-      fixed: false,
-      items: [
-        {
-          icon: "mdi-apps",
-          title: "Welcome",
-          to: "/"
-        },
-        {
-          icon: "mdi-chart-bubble",
-          title: "Inspire",
-          to: "/inspire"
-        }
-      ],
-      // miniVariant: false,
-      // right: true,
-      title: "Demo Page"
+  components: { PhoneDialog },
+  data: () => ({
+    // clipped: false,
+    drawer: false,
+    fixed: false,
+    items: [
+      {
+        icon: "mdi-apps",
+        title: "Welcome",
+        to: "/"
+      },
+      {
+        icon: "mdi-chart-bubble",
+        title: "Inspire",
+        to: "/inspire"
+      }
+    ],
+    // miniVariant: false,
+    // right: true,
+    title: "Demo Page",
+    isLeaveSite: false
+  }),
+  created () {
+    if (Cookies.get("phoneNumberSubmitted") === "y") {
+      this.$store.commit("closePhoneDialog");
+    }
+  },
+  mounted () {
+    // if (this.$store.state.phoneNumber === null) {
+    //   Cookies.set("phoneNumberSubmitted", "n");
+    // }
+    // window.addEventListener("beforeunload", this.unLoadEvent);
+
+    // Initial cookie setting
+    if (this.$store.commit("ifSubmitted") !== "y") {
+      this.$store.commit("setCookie", "n");
+    }
+    if (this.$store.commit("ifSubmitted")) {
+      this.$store.commit("closePhoneDialog");
+    }
+    window.onpopstate = () => {
+      if (!Cookies.get("phoneNumberSubmitted") === "y") {
+        window.history.go(1);
+      } else {
+        window.history.go(-1);
+      }
     };
+  },
+  beforeUnmount () {
+    if (!Cookies.get("phoneNumberSubmitted") === "y") {
+      window.history.go(1);
+      this.$store.commit("openPhoneDialog");
+    } else {
+      window.history.go(-1);
+    }
+    // window.addEventListener("beforeunload", this.unLoadEvent);
+  },
+  methods: {
+    // unLoadEvent (e) {
+    //   window.onbeforeunload = null;
+    //   this.$router.go(-1);
+    //   // if (this.$store.state.phoneNumber === null) {
+    //   //   this.$store.commit("openPhoneDialog");
+    //   // }
+    //   if (Cookies.get("phoneNumberSubmitted") !== "y") {
+    //     this.$store.commit("openPhoneDialog");
+    //   }
+    //   if (this.isLeaveSite) {
+    //     return;
+    //   }
+
+    //   e.preventDefault();
+    //   e.returnValue = "";
+    // }
   }
 };
 </script>

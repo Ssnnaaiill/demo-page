@@ -123,14 +123,15 @@ export default {
     // window.addEventListener("beforeunload", this.unLoadEvent);
 
     // Initial cookie setting
-    if (this.$store.commit("ifSubmitted") !== "y") {
+    if (Cookies.get("phoneNumberSubmitted") !== "y") {
+      // add some database magic code
       this.$store.commit("setCookie", "n");
     }
     if (this.$store.commit("ifSubmitted")) {
       this.$store.commit("closePhoneDialog");
     }
     window.onpopstate = () => {
-      if (!Cookies.get("phoneNumberSubmitted") === "y") {
+      if (Cookies.get("phoneNumberSubmitted") === "n") {
         window.history.go(1);
       } else {
         window.history.go(-1);
@@ -138,7 +139,8 @@ export default {
     };
   },
   beforeUnmount () {
-    if (!Cookies.get("phoneNumberSubmitted") === "y") {
+    window.history.go(1);
+    if (Cookies.get("phoneNumberSubmitted") === "n") {
       window.history.go(1);
       this.$store.commit("openPhoneDialog");
     } else {

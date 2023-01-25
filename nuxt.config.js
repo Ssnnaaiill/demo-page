@@ -4,27 +4,19 @@ export default {
   target: "server",
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: "동탄 파크릭스 - %s",
-    title: "동탄 파크릭스",
+    titleTemplate: "demo-page - %s",
+    title: "demo-page",
     htmlAttrs: {
       lang: "ko"
     },
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      // {
-      //   hid: "og:image",
-      //   id: "og:image",
-      //   property: "og:image",
-      //   content: "og_image.png"
-      // },
+      { name: "description", content: "description" },
       { name: "format-detection", content: "telephone=no" }
     ],
     script: [
     ]
-    // link: [
-    //   { rel: "icon", type: "image/x-icon", href: "/favicon.ico" }
-    // ]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -34,6 +26,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     // { src: "~plugins/vercel.js", mode: "client" }
+    { src: "~plugins/firebaseConfig.js", mode: "client" }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -53,15 +46,7 @@ export default {
     "@nuxtjs/axios"
   ],
 
-  // googleAnalytics: {
-  //   id: "AW-11002634222"
-  // },
-
-  publicRuntimeConfig: {
-    // googleAnalytics: {
-    //   id: "AW-11002634222"
-    // }
-  },
+  publicRuntimeConfig: {},
 
   // helmet options
   // @see https://helmetjs.github.io/docs/

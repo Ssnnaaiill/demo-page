@@ -98,7 +98,7 @@ export default {
       const newDataset = this.dataset.slice();
       newDataset.push({
         phoneNumber: this.phoneNumber,
-        source: window.location.hostname,
+        source: document.title.split(" ")[0],
         // source: punycode.decode(window.location.hostname),
         createdAt: new Date().toLocaleString("en-us")
       });

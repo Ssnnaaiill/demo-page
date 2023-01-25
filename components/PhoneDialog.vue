@@ -43,8 +43,6 @@
 import Cookies from "js-cookie";
 import db from "@/plugins/firebaseConfig";
 
-// const punycode = require("punycode/");
-
 export default {
   name: "PhoneDialog",
   data: () => ({
@@ -99,7 +97,6 @@ export default {
       newDataset.push({
         phoneNumber: this.phoneNumber,
         source: document.title.split(" ")[0],
-        // source: punycode.decode(window.location.hostname),
         createdAt: new Date().toLocaleString("en-us")
       });
       db.ref("phoneNumbers").child("data").set(newDataset);

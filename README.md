@@ -13,7 +13,6 @@
 **Required Packages**
 - firebase
 - cross-env (Optional)
-- punycode
 
 <!-- ## Build Setup
 
